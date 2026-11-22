@@ -1,18 +1,38 @@
 # TaskFlow
 
-Full-stack team task manager with authentication, project collaboration, task assignment, and due-date email reminders. Built with React, Node.js, Express, and PostgreSQL.
+Full-stack team task manager with authentication, project collaboration, task assignment, and a three-column task board. Built with React, Node.js, Express, and PostgreSQL.
 
 **Live demo:** coming soon
+
+## Screenshots
+
+### Task board (project owner)
+
+![Task board, owner view](docs/screenshots/task-board-owner.png)
+
+### Task board (team member)
+
+Members can create, move, and assign tasks, but only the owner can add members or delete the project.
+
+![Task board, member view](docs/screenshots/task-board-member.png)
+
+### Projects page
+
+![Projects page, owner view](docs/screenshots/projects-page-owner.png)
+
+![Projects page, member view](docs/screenshots/projects-page-member.png)
 
 ## Features
 
 - User registration and login with JWT authentication and bcrypt password hashing
-- Create projects and add teamates by email
-- Role-based access: only a project's owner can add members
-- Create, update, and delete tasks with status, assignee, and due date
+- Projects page listing every project you belong to, with create and delete
+- Add teammates to a project by email
+- Role-based access: only a project's owner can add members or delete a project
+- Task board with three columns (To Do, In Progress, Done), where tasks move between columns with one click
+- Create, update, and delete tasks with a status, an assignee, and a due date
 - Access control on every route so users can only see their own projects
 
-**In progress:** task board UI, due-date email reminders, automated tests with CI
+**In progress:** due-date email reminders, automated tests with CI
 
 ## Tech Stack
 
@@ -23,7 +43,7 @@ Full-stack team task manager with authentication, project collaboration, task as
 
 ## Getting Started
 
-## Prerequisites
+### Prerequisites
 
 - Node.js (LTS)
 - PostgreSQL
@@ -77,6 +97,7 @@ Full-stack team task manager with authentication, project collaboration, task as
 | GET | /api/projects/:id | Get a project with members and tasks |
 | POST | /api/projects/:id/members | Add a member (owner only) |
 | POST | /api/projects/:id/tasks | Create a task |
+| DELETE | /api/projects/:id | Delete a project (owner only) |
 | PATCH | /api/tasks/:id | Update a task |
 | DELETE | /api/tasks/:id | Delete a task |
 
@@ -85,7 +106,8 @@ All routes except register and login require an `Authorization: Bearer <token>` 
 ## Design Decisions
 
 - Project creation runs in a database transaction so a project and its owner membership are created together or not at all.
-- Every query checks project membership to prevent one user form accessing another team's data.
+- Every query checks project membership to prevent one user from accessing another team's data.
+- Owner-only actions (adding members, deleting a project) are enforced on the server, and the frontend only hides the buttons.
 - Queries use parameterized placeholders to prevent SQL injection.
 
 ## What I'd Improve Next
