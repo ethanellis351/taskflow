@@ -30,5 +30,6 @@ CREATE TABLE tasks (
     CHECK (status IN ('todo', 'in_progress', 'done')),
   assignee_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
   due_date DATE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  reminder_sent_at TIMESTAMPTZ
 );

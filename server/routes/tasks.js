@@ -46,9 +46,10 @@ router.patch('/:id', async (req, res) => {
 
         const result = await pool.query(
             `UPDATE tasks
-             SET title = $1, description = $2, status = $3, assignee_id = $4, due_date = $5
-                WHERE id = $6
-                RETURNING *`,
+             SET title = $1, description = $2, status = $3, assignee_id = $4, due_date = $5,
+              reminder_sent_at = CASE WHEN $5::date IS DISTINCT FROM due_date THEN NULL ELSE reminder_sent_at END
+             WHERE id = $6
+             RETURNING *`,
             [
                 title !== undefined ? title : task.title,
                 description !== undefined ? description : task.description,
