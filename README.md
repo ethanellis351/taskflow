@@ -65,15 +65,14 @@ Members can create, move, and assign tasks, but only the owner can add members o
 
 2. Create a PostgreSQL database named `taskflow`, then run the SQL in `server/schema.sql` to create the tables.
 
-3. Create `server/.env` with:
+3. Copy the example environment file and fill in your values:
 
-    ```
-    DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/taskflow
-    PORT=4000
-    JWT_SECRET=your_long_random_string
+    ```bash
+    cd server
+    copy .env.example .env      # on Mac/Linux: cp .env.example .env
     ```
 
-    Email settings are optional. See [Email reminders](#email-reminders).
+    Then edit `server/.env` with your PostgreSQL password and a long random `JWT_SECRET`. Email settings are optional. See [Email reminders](#email-reminders).
 
 4. Install dependencies and start the server:
 
