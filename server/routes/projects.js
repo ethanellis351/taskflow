@@ -181,4 +181,24 @@ router.post('/:id/tasks', async (req, res) => {
     }
 });
 
+// Delete a project (owner only)
+router.delete('/:id', async (req, res) => {
+  const projectId = parseId(req.params.id);
+  if (!projectId) return res.status(400).json({ error: 'Invalid project id.' });
+
+  try {
+    const role = await getRole(projectId, req.userId);
+    if (!role) return res.status(404).json({ error: 'Project not found.' });
+    if (role !== 'owner') {
+      return res.status(403).json({ error: 'Only the project owner can delete a project.' });
+    }
+
+    await pool.query('DELETE FROM projects WHERE id = $1', [projectId]);
+    res.status(204).end();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
 module.exports = router;
